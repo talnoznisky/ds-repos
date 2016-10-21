@@ -1,0 +1,46 @@
+Reading Excel files
+
+download
+read (params: file, header, sep, rownames, nrows)
+	reads to RAM
+		tries read tabs as separators by default
+	read.csv/read.csv2
+		^ read commas and header by default
+
+ex of downloaded excel file
+if(!file.exists(data)){dir.create("data")}
+fileurl <- xxxxxxxxxx
+download.file(fileurl,destfile<-"./data/trafficdata.xlsx",method="curl")
+downloaddate<-date()
+library(xlsx)  ##this is your xlsx package
+read.xlsx
+or write.xlsx (to write it back out)
+
+Also look into XLconnect for doing a lot of excel manipulation
+	check out xlconnect vignette
+
+
+Reading XML
+library(XML)
+programmatically extract using XMLsapply(xmlfile,xmlvalue)
+there's also XPATH language for dealing with xml
+totally need more understanding about xml extraction
+
+Reading JSON
+jsonlite package
+ex:
+library(jsonlite)
+jsonData <- fromJSON(filelocation)
+names(jsonData) ##output is a data frame with all of the names
+names(jsonData$owner)
+
+toJSON(iris, pretty=TRUE) ##formats with indentation
+
+Datatables
+data.table
+- subsetting:
+	uses expressions between curly brackets
+- keys
+	- assign columns for subsetting
+	- also facilitates joins
+		
