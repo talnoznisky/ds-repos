@@ -1,0 +1,65 @@
+---
+title: "Practical Machine Learning - Prediction Assignment"
+author: "Tal Noznisky"
+date: "2/15/2018"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+##Background:
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement – a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website here: http://groupware.les.inf.puc-rio.br/har (see the section on the Weight Lifting Exercise Dataset).
+
+First, we import the data and create the appropriate data sets. Since we will perform a second prediction test on a reserved testing data set for this assignment, the training data itself be split up. 
+```{r data, include=TRUE}
+#load caret library
+library(caret)
+
+#download and read data sets
+training <- read.csv(url("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"), na.strings="NA")
+testing <- read.csv(url("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"), na.strings="NA")
+
+#divide training data set into training and testing sets
+set.seed(101)
+intraining <- createDataPartition(training$classe, p=0.7, list=FALSE)
+train <- training[intraining,]
+test <- training[-intraining,]
+```
+
+Now we clean both data sets in an identical fashion. We want to slim down the volume of variables. That will improve bias by minimizing possibility of overfitting, and improve accuracy by reduced noise. There are numerous methods to preprocess the data to that effect. Below we remove factors with little variation, as well as factors that are more than 90% filled in with NAs. The resulting data sets should include mostly influential factors.
+```{r cleaning, include=TRUE}
+#find and eliminate columns with near zero variance
+nzv <- nearZeroVar(train)
+train <- train[,-nzv]
+test <- test[,-nzv]
+
+#identify every column with >90% NAs and remove them from data sets
+na <- sapply(train, function(x) mean(is.na(x))) > 0.9
+train <- train[,na==FALSE]
+train <- train[,-(1:5)]
+test <- test[,na==FALSE]
+test <- test[,-(1:5)]
+```
+
+Now we finally train and test the model. Based on this class's lessons, I chose to train my data on a random forest algorithm. 
+```{r training, include=TRUE}
+#train data using rf method
+set.seed(101)
+modelFit <- train(classe ~ ., data = train, method="rf", ntree=10)
+
+#predict on test set
+prediction <- predict(modelFit,newdata=test)
+confusion <- confusionMatrix(prediction, test$classe)
+confusion$table
+```
+ 
+Intuitively, that confusion table seems to say that the out-of-sample accuracy is fairly high. Let's check.
+``` {r accuracy, include=TRUE}
+#accuracy
+confusion$overall[1]
+
+#out of sample error
+1-confusion$overall[1]
+
+```
+Great! The accuracy is 99.61%, which means that the out of sample error rate is 0.39%.
