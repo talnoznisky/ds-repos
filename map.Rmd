@@ -1,5 +1,5 @@
 ---
-title: "Forestation by US State"
+title: "US Forestation by State"
 author: "Tal Noznisky"
 date: "5/19/2018"
 output: html_document
