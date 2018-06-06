@@ -2,7 +2,7 @@
 title: "US Telecommunications Stocks"
 author: "Tal Noznisky"
 date: "6/5/2018"
-output: html_document
+output: revealjs::revealjs_presentation
 ---
 <br />
 Chart will pull in and grab last 90 days of closing stock prices for top four telecommunications companies in US market.
