@@ -1,0 +1,12 @@
+name: us_telecom_stocks
+title: us_telecom_stocks
+username:
+account: talnoznisky
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 356613
+bundleId: 1416055
+url: https://talnoznisky.shinyapps.io/us_telecom_stocks/
+when: 1528348328.37068
+asMultiple: FALSE
+asStatic: FALSE
