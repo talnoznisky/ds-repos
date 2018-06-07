@@ -1,0 +1,67 @@
+US Telecoms Stock Ticker
+========================================================
+author: Tal Noznisky 
+date: 2018-06-06
+autosize: true
+
+US Telecoms Stock Ticker
+========================================================
+
+If you're like me, you are one of 95k telecom workers in the US
+
+
+US Telecoms Stock Ticker
+========================================================
+
+And if you're still with me, you don't like looking at long data tables to get your telecom closing stock price informations
+
+```{r echo=FALSE, results="hide"}
+library(plotly)
+library(tidyr)
+library(dplyr)
+library(quantmod)
+end <- Sys.Date()
+start <- end - 10
+
+getSymbols("TMUS", src="yahoo", from=start, to=end)
+getSymbols("VZ", src="yahoo", from=start, to=end)
+getSymbols("S", src="yahoo", from=start, to=end)
+getSymbols("T", src="yahoo", from=start, to=end)
+
+
+vz.df <- data.frame(VZ)
+tm.df <- data.frame(TMUS)
+att.df <- data.frame(T) 
+s.df <- data.frame(S)
+
+df <- data.frame(cbind(rownames(tm.df), tm.df[,4], vz.df[,4], att.df[,4], s.df[,4]))
+
+colnames(df) <- c("date","tmobile","verizon","att","sprint")
+stocks <- data.frame(gather(df, company, closingPrice, tmobile:sprint))
+stocks$date <- as.Date(stocks$date)
+stocks$closingPrice <- as.numeric(stocks$closingPrice)
+print(head(stocks))
+```
+```{r echo=FALSE}
+print(head(stocks))
+```
+
+US Telecoms Stock Ticker
+========================================================
+
+You'd rather view the data on a lovely Plotly graph
+
+```{r, echo=FALSE}
+p = plot_ly(stocks, x=stocks$date, y=stocks$closingPrice, type="scatter", 
+        mode="lines", color=stocks$company) %>%
+  layout(yaxis=list(title="Closing Price"))
+htmlwidgets::saveWidget(as.widget(p), file = "demo.html")
+```
+<iframe src="demo.html" style="position:absolute;height:80%;width:100%"></iframe>
+
+US Telecoms Stock Ticker
+========================================================
+
+Well, now you can!
+Check it out at the following URL:
+https://talnoznisky.shinyapps.io/us_telecom_stocks/
