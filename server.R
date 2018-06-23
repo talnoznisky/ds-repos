@@ -24,16 +24,27 @@ shinyServer(function(input, output) {
     s.df <- data.frame(S)
     
     df <- data.frame(cbind(rownames(tm.df), tm.df[,4], vz.df[,4], att.df[,4], s.df[,4]))
+    df[,-1]<- lapply(df[,-1], function(x) as.numeric(as.character(x)))
+    
     
     colnames(df) <- c("date","tmobile","verizon","att","sprint")
     stocks <- data.frame(gather(df, company, closingPrice, tmobile:sprint))
     stocks$date <- as.Date(stocks$date)
-    stocks$closingPrice <- as.numeric(stocks$closingPrice)
+
 
 # draw the line plot with the specified lookback data
-    plot_ly(stocks, x=stocks$date, y=stocks$closingPrice, type="scatter", 
-           mode="lines", color=stocks$company) %>%
+    plot_ly(stocks, x=stocks$date, y=stocks$closingPrice, type="scatter", mode="lines", color=stocks$company) %>%
       layout(
              yaxis=list(title="Closing Price"))
   })
+  portfolio <- eventReactive(input$calc,{
+    paste0("$", sum(
+      input$a*df[nrow(df),]$att,
+      input$s*df[nrow(df),]$sprint,
+      input$t*df[nrow(df),]$tmobile,
+      input$v*df[nrow(df),]$verizon      
+    ))
+  })
+  output$portfolio <- renderText({portfolio()})
 })
+
