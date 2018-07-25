@@ -495,7 +495,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <h2>The Algorithm</h2>
 <ul>
 <li>My algorithm is predicated on the Backoff algorithm.</li>
-<li>It will take input and loop it through a table of ngrams seeking a match on n-1, and return the words the follow those matches.</li>
+<li>It will take input and loop it through a table of ngrams seeking a match on n-1, and return the words that follow those matches.</li>
 <li>The ngrams range from n = 2:5. Consequently, the algorithm can handle inputs ranging from 1 to 4 grams. If an input is longer than 4, the algorithm with reduce it to its last 4 words.</li>
 <li>The algorithm will programmatically reduce the input from its head to its tail, one word at time, seeking more granular matches, and increasing the recall of match results.</li>
 <li>The algorithm does not sacrifice precision over recall, because it loops through ngrams from greatest to least n-values, allowing it to surface more precise matches first.</li>
@@ -551,7 +551,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </section>
 <section id="accuracy" class="slide level2">
 <h2>Accuracy</h2>
-<p>Due to the limited disk space on my laptop, I opted to use a relatively small data set. The ngram frequency table I used has only ~five million rows. However, it’s size allows me to run the model efficiently on Shiny servers. More on that later. Moreover, the model’s accuracy is <em>not bad</em>. I ran 200 simulations against training, three times. Each time, I widened the scope of accuracy by matching the actual next word against the first through the third predicted term. I figured that most text prediction tools allows users to select from more than one suggestion. Below are the accuracy rates for matching up to three suggestions.</p>
+<p>Due to the limited disk space on my laptop, I opted to use a relatively small data set. The ngram frequency table I used has only ~five million rows. However, it’s size allows me to run the model efficiently on Shiny servers. More on that later. Moreover, the model’s accuracy is <em>not bad</em>. I ran 200 simulations against testing data, three times. Each time, I widened the scope of accuracy by matching the actual next word against the first through the third predicted term. I figured that most text prediction tools allows users to select from more than one suggestion. Below are the accuracy rates for matching up to three suggestions.</p>
 <pre><code>##   accuracy
 ## 1    0.120
 ## 2    0.170
@@ -567,7 +567,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </section>
 <section id="using-the-app" class="slide level2">
 <h2>Using the app</h2>
-<p>Please try the I built based on this algorithm!</p>
+<p>Please try the app I built based on this algorithm!</p>
 <p>Find it <a href="https://talnoznisky.shinyapps.io/predictiontest/">here</a></p>
 <p>The app works simply: users add text into an input bar and hit Get Predictions. The server returns one prediction by default. Users can opt to see up to five results. However - for the app to be performant (i.e. load in a reasonable amount of time) I had to use a smaller ngram set for the Shiny app than I tested on my local machine. For that reason, the prediction results some times number LESS than the maximum number of predictions that user can select. In those cases, it will only return the maximum number of returned predictions.</p>
 <p>I look forward to your feedback!</p>
