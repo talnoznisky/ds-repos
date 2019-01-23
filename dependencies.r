@@ -1,5 +1,0 @@
-library(R.utils)
-library(dplyr)
-library(ngram)
-library(tm)
-library(shiny)
