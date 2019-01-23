@@ -1,5 +1,5 @@
 # JUST LIKE A MISCELLANY DRAWER 
-## BUT FOR RANDOM DATA SCIENCE CODE
+# BUT FOR RANDOM DATA SCIENCE CODE
 
 This is just a repo to house assignments from my data science coursework. I didn't want them to grossly elongate my list of repos. 
 So I converted them to orphan branches in this big repo using advice from this SO: 
